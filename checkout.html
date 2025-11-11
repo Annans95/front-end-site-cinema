@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* === MODAL DE CONFIRMAÇÃO === */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -78,7 +77,6 @@
     <section class="checkout-section">
       <h2 id="movie-title"></h2>
 
-      <!-- Seleção de horário -->
       <label for="showtime">Escolha o horário:</label>
       <select id="showtime" required>
         <option value="">Selecione</option>
@@ -88,7 +86,6 @@
         <option value="21:30">21:30</option>
       </select>
 
-      <!-- Tipo de sessão -->
       <label for="session-type">Tipo de sessão:</label>
       <select id="session-type" required>
         <option value="">Selecione</option>
@@ -97,11 +94,9 @@
         <option value="IMAX">IMAX — R$ 45,00</option>
       </select>
 
-      <!-- Seleção de assentos -->
       <h3>Selecione seus assentos</h3>
       <div id="seats" class="seats"></div>
 
-      <!-- Seção de lanches -->
       <div class="snack-section">
         <h3>🍿 Lanches e Bebidas</h3>
 
@@ -130,7 +125,6 @@
         </label>
       </div>
 
-      <!-- Informações do cliente -->
       <label for="nome">Nome completo:</label>
       <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
 
@@ -140,10 +134,27 @@
       <label for="email">E-mail para confirmação:</label>
       <input type="email" id="email" placeholder="exemplo@email.com" required>
 
-      <!-- Botão de compra -->
+      <h3>Método de Pagamento</h3>
+<div class="payment-methods">
+  <label class="payment-option">
+    <input type="radio" name="payment" value="Pix">
+    <span>Pix <span class="payment-icon"></span></span>
+  </label>
+
+  <label class="payment-option">
+    <input type="radio" name="payment" value="Cartão de Crédito">
+    <span>Cartão de Crédito <span class="payment-icon"></span></span>
+  </label>
+
+  <label class="payment-option">
+    <input type="radio" name="payment" value="Boleto Bancário">
+    <span>Boleto Bancário <span class="payment-icon"></span></span>
+  </label>
+</div>
+
+
       <button id="finalizar-btn" type="button">Finalizar Compra</button>
 
-      <!-- Resumo -->
       <div id="summary" class="summary-box">
         <h3>Resumo do Pedido</h3>
         <p id="summary-content">Nenhum assento selecionado.</p>
@@ -155,7 +166,6 @@
     <p>© 2025 CineStar</p>
   </footer>
 
-  <!-- === MODAL DE CONFIRMAÇÃO === -->
   <div class="modal-overlay" id="confirmation-modal">
     <div class="modal">
       <h2>Compra Confirmada! 🎉</h2>

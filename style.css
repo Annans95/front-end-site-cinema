@@ -139,19 +139,24 @@ main {
 }
 
 button {
-  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  display: block;
+  margin: 40px auto 20px auto; /* 🔹 espaçamento: topo e base maiores */
+  padding: 18px 50px;          /* 🔹 botão maior */
+  font-size: 1.2rem;           /* 🔹 texto maior */
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff4b2b, #ff416c); /* 🔹 gradiente bonito */
   color: white;
   border: none;
-  padding: 0.9rem 1.6rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(255, 75, 43, 0.4);
 }
 
 button:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0 8px 22px rgba(255, 75, 43, 0.6);
+  background: linear-gradient(90deg, #ff6347, #ff4b2b);
 }
 
 .seats {
@@ -327,3 +332,76 @@ footer {
   margin-bottom: 1rem;
 }
 
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff4b2b;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 15px;
+  width: 45%;              
+  max-width: 380px;       
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
+}
+
+.payment-option:hover {
+  background: #ff6347;
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+}
+
+.payment-option input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 15px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.payment-option input[type="radio"]:checked {
+  background-color: white;
+}
+
+.payment-option input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  background: #ff4b2b;
+  border-radius: 50%;
+}
+
+.payment-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  font-size: 1.3rem;
+}
+
+.payment-icon {
+  font-size: 1.4rem;
+  margin-left: 10p
+}

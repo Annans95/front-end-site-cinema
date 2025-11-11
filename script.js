@@ -1,6 +1,5 @@
 const buyButtons = document.querySelectorAll(".buy-btn");
 
-// Selecionar filme e ir para checkout
 buyButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     const selectedMovie = btn.dataset.movie;
@@ -11,10 +10,9 @@ buyButtons.forEach(btn => {
 
 if (window.location.pathname.includes("checkout.html")) {
   const movieTitleEl = document.getElementById("movie-title");
-  const movieName = localStorage.getItem("selectedMovie") || "Filme não especificado";
-  if (movieTitleEl) movieTitleEl.textContent = movieName;
+  const movieName = localStorage.getItem("selectedMovie");
+  if (movieName) movieTitleEl.textContent = movieName;
 
-  // Geração dos assentos
   const seatsContainer = document.getElementById("seats");
   if (seatsContainer) {
     const rows = 5;
@@ -34,7 +32,6 @@ if (window.location.pathname.includes("checkout.html")) {
     });
   }
 
-  // Máscara CPF
   const cpfInput = document.getElementById("cpf");
   if (cpfInput) {
     cpfInput.addEventListener("input", function (e) {
@@ -46,10 +43,10 @@ if (window.location.pathname.includes("checkout.html")) {
     });
   }
 
-  // Atualizações dinâmicas do resumo
   document.querySelectorAll(".snack").forEach(cb => cb.addEventListener("change", updateSummary));
   document.getElementById("showtime").addEventListener("change", updateSummary);
   document.getElementById("session-type").addEventListener("change", updateSummary);
+  document.querySelectorAll("input[name='payment']").forEach(r => r.addEventListener("change", updateSummary));
 
   const finalizarBtn = document.getElementById("finalizar-btn");
   finalizarBtn.addEventListener("click", () => {
@@ -58,29 +55,21 @@ if (window.location.pathname.includes("checkout.html")) {
     const showtime = document.getElementById("showtime").value;
     const sessionType = document.getElementById("session-type").value;
     const email = document.getElementById("email").value;
-    const name = document.getElementById("nome").value; // corrigido
+    const name = document.getElementById("nome").value;
     const cpf = document.getElementById("cpf").value;
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
 
-    // Validação
-    if (!name || !cpf || !showtime || !sessionType || !email || selectedSeats.length === 0) {
-      alert("⚠️ Por favor, preencha todos os campos e selecione pelo menos um assento.");
+    if (!name || !cpf || !showtime || !sessionType || !email || !payment || selectedSeats.length === 0) {
+      alert("⚠️ Por favor, preencha todos os campos e selecione um método de pagamento.");
       return;
     }
 
     const snackNames = [...selectedSnacks].map(s => s.value).join(", ") || "Nenhum";
-
-    // Cálculo dos valores
-    const seatPrice =
-      sessionType === "3D" ? 35 :
-      sessionType === "IMAX" ? 45 : 25;
-
+    let seatPrice = sessionType === "3D" ? 35 : sessionType === "IMAX" ? 45 : 25;
     const seatTotal = selectedSeats.length * seatPrice;
-    const snackTotal = [...selectedSnacks].reduce(
-      (sum, s) => sum + parseFloat(s.dataset.price), 0
-    );
+    const snackTotal = [...selectedSnacks].reduce((sum, s) => sum + parseFloat(s.dataset.price), 0);
     const total = seatTotal + snackTotal;
 
-    // Criação do modal de confirmação
     const modal = document.createElement("div");
     modal.innerHTML = `
       <div id="confirm-modal" style="
@@ -89,7 +78,6 @@ if (window.location.pathname.includes("checkout.html")) {
         background: rgba(0,0,0,0.6);
         display: flex; align-items: center; justify-content: center;
         z-index: 1000;
-        animation: fadeIn 0.3s ease;
       ">
         <div style="
           background: #fff;
@@ -100,15 +88,15 @@ if (window.location.pathname.includes("checkout.html")) {
           max-width: 400px;
           text-align: center;
           box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+          animation: fadeIn 0.3s ease;
         ">
           <h2 style="margin-bottom: 15px;">Confirme sua compra</h2>
-          <p><b>Nome:</b> ${name}</p>
-          <p><b>CPF:</b> ${cpf}</p>
           <p><b>Filme:</b> ${movieName}</p>
           <p><b>Sessão:</b> ${sessionType}</p>
           <p><b>Horário:</b> ${showtime}</p>
           <p><b>Assentos:</b> ${selectedSeats.length}</p>
           <p><b>Lanches:</b> ${snackNames}</p>
+          <p><b>Forma de Pagamento:</b> ${payment}</p>
           <p style="margin-top:10px; font-weight:bold; font-size:1.2em;">
             Total: R$ ${total.toFixed(2).replace('.', ',')}
           </p>
@@ -126,35 +114,31 @@ if (window.location.pathname.includes("checkout.html")) {
     `;
     document.body.appendChild(modal);
 
-    // Fechar modal
     document.getElementById("cancelar").addEventListener("click", () => {
       modal.remove();
     });
 
-    // Confirmar compra
     document.getElementById("confirmar").addEventListener("click", () => {
       modal.remove();
-      alert(`✅ Compra confirmada com sucesso!
-      
+      alert(`✅ Compra confirmada!
 Filme: ${movieName}
 Sessão: ${sessionType}
 Horário: ${showtime}
 Assentos: ${selectedSeats.length}
 Lanches: ${snackNames}
-E-mail: ${email}
-
-Obrigado por comprar com a CineStar! 🎬`);
+Forma de Pagamento: ${payment}
+Confirmação enviada para: ${email}`);
       localStorage.clear();
       window.location.href = "index.html";
     });
   });
 
-  // Atualiza resumo em tempo real
   function updateSummary() {
     const selectedSeats = document.querySelectorAll(".seat.selected");
     const selectedSnacks = document.querySelectorAll(".snack:checked");
     const showtime = document.getElementById("showtime").value || "—";
     const sessionType = document.getElementById("session-type").value || "—";
+    const payment = document.querySelector('input[name="payment"]:checked')?.value || "—";
 
     let seatPrice = 0;
     if (sessionType === "2D") seatPrice = 25;
@@ -175,12 +159,14 @@ Obrigado por comprar com a CineStar! 🎬`);
       <b>Horário:</b> ${showtime}<br>
       <b>Assentos:</b> ${selectedSeats.length > 0 ? selectedSeats.length : "Nenhum"}<br>
       <b>Lanches:</b> ${selectedSnacks.length > 0 ? [...selectedSnacks].map(s => s.value).join(", ") : "Nenhum"}<br>
+      <b>Forma de Pagamento:</b> ${payment}<br>
       <hr style="border: none; border-top: 1px solid #444; margin: 10px 0;">
       <b>Total Assentos:</b> R$ ${seatTotal.toFixed(2).replace('.', ',')}<br>
       <b>Total Lanches:</b> R$ ${snackTotal.toFixed(2).replace('.', ',')}<br>
-      <div style="margin-top: 10px; font-size: 1.2rem; color: #e50914; font-weight: bold;">
+      <div style="margin-top: 10px; font-size: 1.2rem; color: #ff4b2b; font-weight: bold;">
         Total Geral: R$ ${total.toFixed(2).replace('.', ',')}
       </div>
     `;
   }
 }
+
