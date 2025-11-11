@@ -1,22 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CineStar — Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* === MODAL DE CONFIRMAÇÃO === */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal {
+      background: #fff;
+      color: #222;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: showModal 0.3s ease-out;
+    }
+
+    @keyframes showModal {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal h2 {
+      font-family: 'Cinzel', serif;
+      margin-bottom: 1rem;
+    }
+
+    .modal p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .modal button {
+      background: #e50914;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .modal button:hover {
+      background: #b0060f;
+    }
+  </style>
 </head>
+
 <body>
   <header>
-    <h1> Checkout — CineStar</h1>
+    <h1>Checkout — CineStar</h1>
   </header>
 
   <main>
     <section class="checkout-section">
       <h2 id="movie-title"></h2>
 
+      <!-- Seleção de horário -->
       <label for="showtime">Escolha o horário:</label>
       <select id="showtime" required>
         <option value="">Selecione</option>
@@ -26,14 +88,62 @@
         <option value="21:30">21:30</option>
       </select>
 
+      <!-- Tipo de sessão -->
+      <label for="session-type">Tipo de sessão:</label>
+      <select id="session-type" required>
+        <option value="">Selecione</option>
+        <option value="2D">2D — R$ 25,00</option>
+        <option value="3D">3D — R$ 35,00</option>
+        <option value="IMAX">IMAX — R$ 45,00</option>
+      </select>
+
+      <!-- Seleção de assentos -->
       <h3>Selecione seus assentos</h3>
       <div id="seats" class="seats"></div>
+
+      <!-- Seção de lanches -->
+      <div class="snack-section">
+        <h3>🍿 Lanches e Bebidas</h3>
+
+        <label>
+          <input type="checkbox" class="snack" value="Combo Pipoca + Refri" data-price="35">
+          <img src="images/combo.png" alt="Combo Pipoca e Refri">
+          <span>Combo Pipoca + Refri — R$ 35</span>
+        </label>
+
+        <label>
+          <input type="checkbox" class="snack" value="Pipoca Média" data-price="20">
+          <img src="images/pipoca.png" alt="Pipoca Média">
+          <span>Pipoca Média — R$ 20</span>
+        </label>
+
+        <label>
+          <input type="checkbox" class="snack" value="Refrigerante" data-price="12">
+          <img src="images/refri.png" alt="Refrigerante">
+          <span>Refrigerante — R$ 12</span>
+        </label>
+
+        <label>
+          <input type="checkbox" class="snack" value="Doce" data-price="10">
+          <img src="images/doce.png" alt="Doce">
+          <span>Doce — R$ 10</span>
+        </label>
+      </div>
+
+      <!-- Informações do cliente -->
+      <label for="nome">Nome completo:</label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+
+      <label for="cpf">CPF:</label>
+      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
 
       <label for="email">E-mail para confirmação:</label>
       <input type="email" id="email" placeholder="exemplo@email.com" required>
 
-      <button id="finalizar-btn">Finalizar Compra</button>
+      <!-- Botão de compra -->
+      <button id="finalizar-btn" type="button">Finalizar Compra</button>
 
+      <!-- Resumo -->
       <div id="summary" class="summary-box">
         <h3>Resumo do Pedido</h3>
         <p id="summary-content">Nenhum assento selecionado.</p>
@@ -44,6 +154,15 @@
   <footer>
     <p>© 2025 CineStar</p>
   </footer>
+
+  <!-- === MODAL DE CONFIRMAÇÃO === -->
+  <div class="modal-overlay" id="confirmation-modal">
+    <div class="modal">
+      <h2>Compra Confirmada! 🎉</h2>
+      <p id="modal-text">Obrigado por comprar com a CineStar!</p>
+      <button id="fechar-modal">OK</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

@@ -8,18 +8,22 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Header */
+
 header {
   text-align: center;
   padding: 2rem 1rem;
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   box-shadow: 0 0 25px rgba(255, 75, 43, 0.4);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 header .logo {
-  width: 1000px; 
+  width: 100%; 
+  max-width: 1000px;
   height: auto;
   margin-bottom: 0.5rem;
   filter: drop-shadow(0 0 10px rgba(255, 75, 43, 0.6));
@@ -56,23 +60,22 @@ main {
 }
 
 .movie-list {
-  display: flex;              /* ativa o layout em linha */
-  flex-wrap: wrap;            /* permite quebrar linha quando faltar espaço */
-  justify-content: center;    /* centraliza horizontalmente */
-  gap: 1.5rem;                /* espaço entre os cards */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
 .movie-card {
   background: #1b1b1f;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   text-align: center;
-  width: 220px;               /* define o tamanho fixo do card */
-  cursor: pointer;
-  transition: 0.3s;
+  width: 220px;
+  transition: transform 0.3s;
+  box-shadow: 0 0 15px rgba(255, 75, 43, 0.2);
 }
-
 
 .movie-card:hover {
   transform: scale(1.05);
@@ -81,32 +84,32 @@ main {
 
 .movie-card img {
   width: 100%;
-  height: 320px;
+  height: 300px;
   object-fit: cover;
   border-bottom: 3px solid #ff4b2b;
 }
 
 .movie-card h3 {
   margin: 1rem 0 0.5rem;
-  color: #fff;
 }
 
 .buy-btn {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   border: none;
-  padding: 0.7rem 1.4rem;
-  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
   color: white;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 1.5rem;
-  transition: transform 0.3s, opacity 0.3s;
+  margin-bottom: 1rem;
+  transition: 0.3s;
 }
 
 .buy-btn:hover {
-  transform: scale(1.05);
   opacity: 0.9;
+  transform: scale(1.05);
 }
+
 
 .checkout-section {
   text-align: center;
@@ -201,4 +204,126 @@ footer {
   font-size: 0.9rem;
   margin-top: 2rem;
   border-top: 1px solid #222;
+  width: 100%;
 }
+
+.snack-section {
+  background: linear-gradient(180deg, #ff4b2b, #ff6f61);
+  border: 4px solid #fff;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+  box-shadow: 0 0 20px rgba(255, 75, 43, 0.5);
+  color: #fff;
+}
+
+.snack-section h3 {
+  color: #ffffff;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.6rem;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.snack-section label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.snack-section input[type="checkbox"] {
+  display: none;
+}
+
+
+.snack-section input[type="checkbox"]:checked + img + span::before {
+  content: "✔";
+  position: absolute;
+  right: 18px;
+  color: #ff4b2b;
+  background: #fff;
+  font-weight: 700;
+  border-radius: 5px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  box-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+.snack-section input[type="checkbox"]:checked ~ span {
+  color: #fff;
+  font-weight: 600;
+}
+
+.snack-section input[type="checkbox"]:checked ~ img {
+  filter: brightness(1.1);
+}
+
+.snack-section label:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+}
+
+.snack-section img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.snack-section span {
+  font-weight: 500;
+  color: #fff;
+  flex-grow: 1;
+  padding-left: 5px;
+}
+
+.checkout-section label {
+  display: block;
+  text-align: left;
+  margin: 10px auto 5px;
+  font-weight: 600;
+  color: #ffffff;
+  width: 80%;
+}
+
+.checkout-section input[type="text"],
+.checkout-section input[type="email"] {
+  width: 80%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  background: #222;
+  color: #fff;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.checkout-section input:focus {
+  background: #2e2e2e;
+  box-shadow: 0 0 8px rgba(255, 75, 43, 0.5);
+}
+
+.session-type {
+  background-color: #222;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem;
+  border: none;
+  width: 80%;
+  margin-bottom: 1rem;
+}
+
