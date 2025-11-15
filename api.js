@@ -32,14 +32,15 @@ async function enviarPedido(dadosCompra) {
 
     if (resposta.ok) {
       console.log("✅ Pedido enviado com sucesso!", resultado);
-      alert(resultado?.mensagem || "Compra confirmada com sucesso!");
       return resultado;
     } else {
       console.error("⚠️ Erro na requisição:", resultado);
       alert(resultado?.mensagem || "Erro ao processar o pedido.");
+      return null;
     }
   } catch (erro) {
     console.error("❌ Falha ao conectar com o servidor:", erro);
     alert("Erro de conexão com o servidor. Verifique se o back-end está rodando.");
+    return null;
   }
 }

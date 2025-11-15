@@ -124,8 +124,8 @@ buyButtons.forEach(btn => {
       }
     }
 
-    // Gera o sessaoId no servidor ANTES de carregar assentos
-    await gerarSessaoId();
+  // Gera o sessaoId no servidor ANTES de carregar assentos (não bloqueia; se não existir será criado on-demand)
+  if (!sessaoIdGlobal) { gerarSessaoId().catch(console.error); }
 
     // Carrega assentos ocupados do backend APÓS criar os assentos
     carregarAssentosOcupados();    // Delegação de clique para selecionar/deselecionar assentos
@@ -427,8 +427,18 @@ buyButtons.forEach(btn => {
           total: total
       };
 
-        // envia para o back-end Java (função definida em api.js)
-      await enviarPedido(dados);
+        // Envia pedido ao back-end (função definida em api.js) e só prossegue em caso de sucesso
+        let resultadoPedido = null;
+        try {
+          resultadoPedido = await enviarPedido(dados);
+        } catch (e) {
+          console.error("Erro ao enviar pedido:", e);
+          resultadoPedido = null;
+        }
+        if (!resultadoPedido) {
+          // Não exibe modal de sucesso se houve erro no servidor ou conexão
+          return;
+        }
 
         // cria modal estilizado de sucesso
         const successModal = document.createElement("div");
@@ -509,8 +519,8 @@ buyButtons.forEach(btn => {
     // Calcular total de assentos com base nos tipos selecionados para cada assento
     let seatTotal = 0;
     selectedSeats.forEach(seat => {
-      // Aqui usamos seat.dataset.id (rótulo legível) para mapear o select correspondente
-      const seatNumber = Array.from(document.querySelectorAll(".seat")).indexOf(seat) + 1;
+      // Usa o mesmo identificador usado nos selects (data-id como "A1", "B3", ...)
+      const seatNumber = seat.dataset.id;
       const ticketSelect = document.querySelector(`.ticket-type-select[data-seat="${seatNumber}"]`);
       const ticketType = ticketSelect ? ticketSelect.value : "";
       
